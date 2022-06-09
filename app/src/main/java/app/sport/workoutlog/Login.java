@@ -2,81 +2,92 @@ package app.sport.workoutlog;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
+    private EditText etEmail, etPassword;
+    private String email, password;
 
-    private EditText emailTV, passwordTV;
-    private Button loginBtn;
+    RequestTask rt = new RequestTask();
+    String logic_path = "http://localhost:8080/api/authorization";
 
-    private FirebaseAuth mAuth;
+    public Login(View view){
+        rt.doInBackground(logic_path);
+    }
+    //private String URL = "https://10.65.142.113/login/login.php";
+
+
+  /*  public Login(JDBCTemplateUserDAOImpl jdbcTemplateUserDaoImpl) {
+        this.jdbcTemplateUserDaoImpl = jdbcTemplateUserDaoImpl;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registr);
+        email = password = "";
+        etEmail = findViewById(R.id.input_login);
+        etPassword = findViewById(R.id.input_pas);
 
-        mAuth = FirebaseAuth.getInstance();
+    }
+    @Autowired
+    private final JDBCTemplateUserDAOImpl jdbcTemplateUserDaoImpl;
 
-        initializeUI();
+    //Авторизация
+    public String authorization(String Email, String Password) {
+        /*try{
+        String responce = "";
+        User user = jdbcTemplateUserDaoImpl.getUserByEmailPassword(Email, Password);
+        if (user.getPassword() != null){
+            responce = "success";
+            return responce;
+        }
+        else {
+            return "failure";
+        }
+        /*}
+        catch (Exception e){
+            throw new UserNoExistException("User not exist(p)");
+        }
+    }
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginUserAccount();
+    //Создание пользователя(регистрация)
+    public void registration(String Email, String Password) throws UserAlreadyExistException {
+        if (jdbcTemplateUserDaoImpl.getUserByEmailPassword(Email, Password) !=null)
+            throw new UserAlreadyExistException("User with this login already exist!");
+        else
+            jdbcTemplateUserDaoImpl.createUser(user);
+    }
+
+
+    public void login(View view) {
+        email = etEmail.getText().toString().trim();
+        password = etPassword.getText().toString().trim();
+        String responce = "";
+        if(!email.equals("") && !password.equals("")){
+            responce = authorization(email, password);
+            if (responce.equals("success")) {
+                    Intent intent = new Intent(Login.this, ScheduleActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (responce.equals("failure")) {
+                    Toast.makeText(Login.this, "Invalid Login Id/Password", Toast.LENGTH_SHORT).show();
+                }
             }
-        });
-    }
-
-    public void loginUserAccount() {
-
-        String email, password;
-        email = emailTV.getText().toString();
-        password = passwordTV.getText().toString();
-
-
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), "Please enter email...", Toast.LENGTH_LONG).show();
-            return;
+        else{
+            Toast.makeText(this, "Fields can not be empty!", Toast.LENGTH_SHORT).show();
         }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), "Please enter password!", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
-
-                            Intent intent = new Intent(Login.this, ScheduleActivity.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Login failed! Please try again later", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
     }
-
-    private void initializeUI() {
-        emailTV = findViewById(R.id.input_login);
-        passwordTV = findViewById(R.id.input_pas);
-        loginBtn = findViewById(R.id.login);
+*/
+    public void register(View view) {
+        Intent intent = new Intent(this, Register.class);
+        startActivity(intent);
+        finish();
     }
 
     public void urireg(View view)
@@ -84,6 +95,4 @@ public class Login extends AppCompatActivity {
         Intent activityReg = new Intent(Login.this, Register.class);
         startActivity(activityReg);
     }
-
-
 }
