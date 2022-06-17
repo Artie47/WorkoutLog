@@ -42,8 +42,6 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
 
-
-
         initializeComponents();
 
     }
@@ -66,25 +64,21 @@ private void initializeComponents() {
         String date_string = String.valueOf(inputEditTextDate);
 
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        Date date_of_reg = null;
-        try {
-            date_of_reg = (Date) formatter.parse(date_string);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
         User user = new User();
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
-        user.setDate_of_reg(date_of_reg);
+        user.setDate_of_reg(new Date(2022,11,01));
         user.setGroup(1);
 
         userAPI.save(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 Toast.makeText(Register.this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(Register.this, PersonalAccount.class);
+                startActivity(i);
             }
 
             @Override

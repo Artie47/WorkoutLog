@@ -9,4 +9,7 @@ public interface UserAPI {
     @POST("/user/save")
     Call<User> save(@Body User user);
 
+    @POST("/user/check")
+    Call<User> check(@Body User user);
+
 }

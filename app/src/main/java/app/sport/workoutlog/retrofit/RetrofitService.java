@@ -2,6 +2,9 @@ package app.sport.workoutlog.retrofit;
 
 import com.google.gson.Gson;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -13,9 +16,16 @@ public class RetrofitService {
     }
 
     private void initializeRetrofit() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.183.238.198:8080")
-                .addConverterFactory(GsonConverterFactory.create(new Gson()))
+
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .build();
+
+        retrofit =  new Retrofit.Builder()
+                .baseUrl("http://10.183.238.198:9000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
 
     }

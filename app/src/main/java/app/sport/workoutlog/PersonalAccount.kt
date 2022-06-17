@@ -7,6 +7,8 @@ import app.sport.workoutlog.databinding.ActivityPersonalAccountBinding
 import app.sport.workoutlog.databinding.ActivityScheduleBinding
 
 class PersonalAccount : AppCompatActivity() {
+
+
     lateinit var binding: ActivityPersonalAccountBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

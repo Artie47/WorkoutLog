@@ -1,9 +1,15 @@
 package app.sport.workoutlog.model;
 
 
+import androidx.core.os.BuildCompat;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Date;
 
+@Entity
 public class User{
+    @PrimaryKey
     private int id;
     private String name;
     private String email;
