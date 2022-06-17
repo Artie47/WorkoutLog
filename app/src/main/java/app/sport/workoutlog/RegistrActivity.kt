@@ -13,11 +13,4 @@ class RegistrActivity : AppCompatActivity() {
         setContentView(R.layout.activity_registr)
     }
 
-
-
-        fun urilog(view: android.view.View){
-            val activityLog = Login::class.java
-            activityLog
-        }
-
 }

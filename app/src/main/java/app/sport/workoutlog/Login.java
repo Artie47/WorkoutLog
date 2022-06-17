@@ -1,98 +1,104 @@
 package app.sport.workoutlog;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import app.sport.workoutlog.model.User;
+import app.sport.workoutlog.retrofit.RetrofitService;
+import app.sport.workoutlog.retrofit.UserAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 
 public class Login extends AppCompatActivity {
-    private EditText etEmail, etPassword;
-    private String email, password;
 
-    RequestTask rt = new RequestTask();
-    String logic_path = "http://localhost:8080/api/authorization";
-
-    public Login(View view){
-        rt.doInBackground(logic_path);
-    }
-    //private String URL = "https://10.65.142.113/login/login.php";
-
-
-  /*  public Login(JDBCTemplateUserDAOImpl jdbcTemplateUserDaoImpl) {
-        this.jdbcTemplateUserDaoImpl = jdbcTemplateUserDaoImpl;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registr);
-        email = password = "";
-        etEmail = findViewById(R.id.input_login);
-        etPassword = findViewById(R.id.input_pas);
+        MaterialButton regBtn = findViewById(R.id.signin);
+        //initializeComponents();
+
+
 
     }
-    @Autowired
-    private final JDBCTemplateUserDAOImpl jdbcTemplateUserDaoImpl;
 
-    //Авторизация
-    public String authorization(String Email, String Password) {
-        /*try{
-        String responce = "";
-        User user = jdbcTemplateUserDaoImpl.getUserByEmailPassword(Email, Password);
-        if (user.getPassword() != null){
-            responce = "success";
-            return responce;
-        }
-        else {
-            return "failure";
-        }
-        /*}
-        catch (Exception e){
-            throw new UserNoExistException("User not exist(p)");
-        }
-    }
+    private void initializeComponents() {
+        @SuppressLint("WrongViewCast")
+        TextInputEditText inputEditTextName = findViewById(R.id.input_name);
+        @SuppressLint("WrongViewCast")
+        TextInputEditText inputEditTextDate = findViewById(R.id.input_date);
+        @SuppressLint("WrongViewCast")
+        TextInputEditText inputEditTextEmail = findViewById(R.id.input_login);
+        @SuppressLint("WrongViewCast")
+        TextInputEditText inputEditTextPassword = findViewById(R.id.input_pas);
+        @SuppressLint("WrongViewCast")
+        TextInputEditText inputEditTextGroup = findViewById(R.id.spinner);
 
-    //Создание пользователя(регистрация)
-    public void registration(String Email, String Password) throws UserAlreadyExistException {
-        if (jdbcTemplateUserDaoImpl.getUserByEmailPassword(Email, Password) !=null)
-            throw new UserAlreadyExistException("User with this login already exist!");
-        else
-            jdbcTemplateUserDaoImpl.createUser(user);
-    }
+        MaterialButton buttonReg = findViewById(R.id.sign_in);
 
+        RetrofitService retrofitService = new RetrofitService();
+        UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
 
-    public void login(View view) {
-        email = etEmail.getText().toString().trim();
-        password = etPassword.getText().toString().trim();
-        String responce = "";
-        if(!email.equals("") && !password.equals("")){
-            responce = authorization(email, password);
-            if (responce.equals("success")) {
-                    Intent intent = new Intent(Login.this, ScheduleActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else if (responce.equals("failure")) {
-                    Toast.makeText(Login.this, "Invalid Login Id/Password", Toast.LENGTH_SHORT).show();
-                }
+        buttonReg.setOnClickListener(view -> {
+            String name = String.valueOf(inputEditTextName);
+            String email = String.valueOf(inputEditTextEmail);
+            String password = String.valueOf(inputEditTextPassword);
+            String date_string = String.valueOf(inputEditTextDate);
+            String id_group = String.valueOf(inputEditTextGroup);
+
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+            Date date_of_reg = null;
+            try {
+                date_of_reg = (Date) formatter.parse(date_string);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        else{
-            Toast.makeText(this, "Fields can not be empty!", Toast.LENGTH_SHORT).show();
-        }
-    }
-*/
-    public void register(View view) {
-        Intent intent = new Intent(this, Register.class);
-        startActivity(intent);
-        finish();
+
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setDate_of_reg(date_of_reg);
+
+            userAPI.save(user).enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    Toast.makeText(Login.this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Toast.makeText(Login.this, "Возникла ошмбка при регистрации!", Toast.LENGTH_SHORT).show();
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, "Ошибка обнаружена", t);
+                }
+            });
+        });
     }
 
-    public void urireg(View view)
-    {
-        Intent activityReg = new Intent(Login.this, Register.class);
-        startActivity(activityReg);
+
+    public void Register(View view) {
+        Intent i = new Intent(Login.this, Register.class);
+        startActivity(i);
     }
 }

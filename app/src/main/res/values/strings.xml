@@ -4,9 +4,9 @@
     <string name="v">Еще не зарегистрирован?</string>
     <string name="sing_in">Войти</string>
     <string name="reg">Зарегистрироваться</string>
-    <string name="name2">Фамилия</string>
-    <string name="name">Имя</string>
-    <string name="login">Логин</string>
+    <string name="name2">Дата регистрации</string>
+    <string name="name">Ф.И.О.</string>
+    <string name="login">Эл. почта</string>
     <string name="pas">Пароль</string>
     <string name="title_schedule">Расписание</string>
     <string name="title_attendance">Посещение</string>
@@ -17,4 +17,5 @@
     <string name="price">ЦЕНА:</string>
     <string name="group">ГРУППА:</string>
     <string name="sch">ПОСЕЩЕНИЕ:</string>
+    <string name="groups">Группа</string>
 </resources>
