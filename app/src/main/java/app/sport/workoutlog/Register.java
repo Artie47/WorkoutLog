@@ -1,7 +1,10 @@
 package app.sport.workoutlog;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,15 +33,21 @@ public class Register extends AppCompatActivity {
     private AppDatabase db;
     public static UserLocal userData;
 
+    private static final String PREFS_FILE = "Account";
+    private static final String PREF_ID = "ID";
+    SharedPreferences settings;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
-        db = AppDatabase.getInstance(this);
 
         initializeComponents();
 
     }
+
+
 
 //    public static UserLocal getUser(Context context){
 //        AppDatabase db = AppDatabase.getInstance(context);
@@ -77,8 +86,11 @@ private void initializeComponents() {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 
                 Toast.makeText(Register.this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
-                UserLocal.ID_USER = String.valueOf(user.getId());
-                Intent i = new Intent(Register.this, PersonalAccount.class);
+
+
+
+
+                Intent i = new Intent(Register.this, ScheduleActivity.class);
                 startActivity(i);
             }
 

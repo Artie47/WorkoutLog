@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
         val m_activity = Intent(this@MainActivity, Login::class.java)
         Thread {
             stop = true

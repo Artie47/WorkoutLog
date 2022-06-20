@@ -3,50 +3,58 @@ package app.sport.workoutlog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import app.sport.workoutlog.localDB.UserLocal
-import app.sport.workoutlog.model.User
-import app.sport.workoutlog.retrofit.RetrofitService
-import app.sport.workoutlog.retrofit.UserAPI
-import retrofit2.Call
-import retrofit2.Response
-import java.util.logging.Level
-import java.util.logging.Logger
+import app.sport.workoutlog.databinding.ActivityPersonalAccountBinding
+import app.sport.workoutlog.databinding.ActivityScheduleBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class PersonalAccount : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lateinit var binding: ActivityPersonalAccountBinding
 
-        val retrofitService = RetrofitService()
-        val userAPI = retrofitService.retrofit.create(UserAPI::class.java)
-        var user = User()
 
-        userAPI.getUser(UserLocal.ID_USER.toInt()).enqueue(object : retrofit2.Callback<User?> {
-            override fun onResponse(call: Call<User?>, response: Response<User?>) {
-                user = response.body() as User
+//        userAPI.getUser(UserLocal.ID_USER.toInt()).enqueue(object : retrofit2.Callback<User?> {
+//            override fun onResponse(call: Call<User?>, response: Response<User?>) {
+//                user = response.body() as User
+//            }
+//
+//            override fun onFailure(call: Call<User?>, t: Throwable) {
+//                Logger.getLogger(Register::class.java.name)
+//                    .log(Level.SEVERE, "Ошибка обнаружена", t)
+//            }
+//        })
+
+
+        binding = ActivityPersonalAccountBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.bNav.setOnNavigationItemReselectedListener {
+            when (it.itemId) {
+                R.id.btn_schedule -> {
+                    val intent = Intent(this@PersonalAccount, ScheduleActivity::class.java)
+                    startActivity(intent)
+                }
+
+
+                R.id.btn_personal_account -> {
+                    val intent = Intent(this@PersonalAccount, PersonalAccount::class.java)
+                    startActivity(intent)
+                }
             }
+            true
+        }
 
-            override fun onFailure(call: Call<User?>, t: Throwable) {
-                Logger.getLogger(Register::class.java.name)
-                    .log(Level.SEVERE, "Ошибка обнаружена", t)
-            }
-        })
 
-        val userData = UserLocal(
-            user.name, user.email,
-            user.password, user.date_of_reg, user.group.toString())
+        findViewById<TextView>(R.id.text_name).text = "Иванов Иван Иванович"
+        findViewById<TextView>(R.id.text_v_sport).text = "Вид спорта: Волейбол"
+        findViewById<TextView>(R.id.text_group).text = "Группа: Волейбол-1"
+        findViewById<TextView>(R.id.text_price).text = "Стоимость: 1000 руб"
+        findViewById<TextView>(R.id.text_term).text = "Срок: 01.06 - 01.07"
+        findViewById<TextView>(R.id.text_sch).text = "След. занятие: 22.06"
 
-        findViewById<TextView>(R.id.text_name).text = userData.name
-        findViewById<TextView>(R.id.text_v_sport).text = userData.sportkind
-        findViewById<TextView>(R.id.text_group).text = userData.id_group
-        findViewById<TextView>(R.id.text_price).text = userData.taxPrice
-        findViewById<TextView>(R.id.text_term).text = userData.nextPayData
-        findViewById<TextView>(R.id.text_sch).text = userData.nextLesson
 
-        setContentView(R.layout.activity_personal_account)
 
         }
 

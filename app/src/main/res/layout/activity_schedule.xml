@@ -6,6 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".ScheduleActivity">
 
+
+    <ImageView
+        android:id="@+id/img_att"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/img_att"
+        app:layout_constraintBottom_toTopOf="@+id/calendarView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="29dp"
+        android:onClick="onClick"
+        android:selectedWeekBackgroundColor="#ff0000"
+        android:weekNumberColor="#0000ff"
+        android:weekSeparatorLineColor="#00ff00"
+        app:layout_constraintBottom_toTopOf="@+id/bNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_att" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bNav"
         android:layout_width="0dp"
