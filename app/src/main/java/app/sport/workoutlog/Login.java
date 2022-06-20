@@ -35,7 +35,7 @@ public class Login extends AppCompatActivity {
         //initializeComponents();
 
     }
-
+//
     private void initializeComponents() {
         EditText inputEditTextEmail = findViewById(R.id.input_login);
         EditText inputEditTextPassword = findViewById(R.id.input_pas);
