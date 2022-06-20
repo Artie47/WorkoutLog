@@ -18,12 +18,12 @@ public class RetrofitService {
     private void initializeRetrofit() {
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(30, TimeUnit.SECONDS)
-                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
                 .build();
 
         retrofit =  new Retrofit.Builder()
-                .baseUrl("http://10.183.238.198:9000")
+                .baseUrl("http://10.154.161.160:9000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();

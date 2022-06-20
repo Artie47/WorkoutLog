@@ -1,35 +1,48 @@
 package app.sport.workoutlog
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import app.sport.workoutlog.databinding.ActivityAttendanceBinding
-import app.sport.workoutlog.databinding.ActivityScheduleBinding
+import android.widget.TextView
+import app.sport.workoutlog.localDB.UserLocal
+import app.sport.workoutlog.model.User
+import app.sport.workoutlog.retrofit.RetrofitService
+import app.sport.workoutlog.retrofit.ScheduleAPI
+import app.sport.workoutlog.retrofit.UserAPI
+import retrofit2.Call
+import retrofit2.Response
+import java.util.logging.Level
+import java.util.logging.Logger
+
 
 class Attendance : AppCompatActivity() {
-    lateinit var binding: ActivityAttendanceBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAttendanceBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.bNav.selectedItemId = R.id.btn_attendance
-        binding.bNav.setOnNavigationItemReselectedListener {
-            when (it.itemId){
-                R.id.btn_schedule -> {
-                    val intent = Intent(this@Attendance, ScheduleActivity::class.java)
-                    startActivity(intent)
-                }
-                R.id.btn_attendance -> {
-                    val intent = Intent(this@Attendance, Attendance::class.java)
-                    startActivity(intent)
-                }
-                R.id.btn_personal_account -> {
-                    val intent = Intent(this@Attendance, PersonalAccount::class.java)
-                    startActivity(intent)
-                }
+
+        setContentView(R.layout.activity_attendance)
+
+        val retrofitService = RetrofitService()
+        val userAPI = retrofitService.retrofit.create(UserAPI::class.java)
+        var user = User()
+
+        userAPI.getUser(UserLocal.ID_USER.toInt()).enqueue(object : retrofit2.Callback<User?> {
+            override fun onResponse(call: Call<User?>, response: Response<User?>) {
+                user = response.body() as User
             }
-            true
-        }
+
+            override fun onFailure(call: Call<User?>, t: Throwable) {
+                Logger.getLogger(Register::class.java.name)
+                    .log(Level.SEVERE, "Ошибка обнаружена", t)
+            }
+        })
+
+        val scheduleAPI = retrofitService.retrofit.create(ScheduleAPI::class.java)
+
+        val list = scheduleAPI.getLessons(user)
+
+        findViewById<TextView>(R.id.was).text = list.toString()
+
+
     }
 }

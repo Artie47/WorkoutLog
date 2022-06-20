@@ -1,25 +1,20 @@
 package app.sport.workoutlog.model;
 
 
-import androidx.core.os.BuildCompat;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity
 public class User{
-    @PrimaryKey
     private int id;
     private String name;
     private String email;
     private String password;
-    private Date date_of_reg;
+    private String date_of_reg;
     private int id_group;
 
     public User(){}
 
-    public User(String name, String email, String password, Date date_of_reg, int id_group){
+    public User(String name, String email, String password, String date_of_reg, int id_group){
         this.name = name;
         this.email = email;
         this.password = password;
@@ -55,11 +50,11 @@ public class User{
         this.password = password;
     }
 
-    public Date getDate_of_reg() {
+    public String getDate_of_reg() {
         return date_of_reg;
     }
 
-    public void setDate_of_reg(Date date_of_reg) {
+    public void setDate_of_reg(String date_of_reg) {
         this.date_of_reg = date_of_reg;
     }
 
@@ -67,27 +62,11 @@ public class User{
         return  id_group;
     }
 
-    public void setGroup(int group){
+    public void setId_group(int group){
         this.id_group = group;
     }
 
-    public String toString(){
-        return "User:" + "\n" + "ID:" + id + "\n" + "Email:" + email + "\n" + "Password" + password
-                + "\n" + "Date of registration" + date_of_reg + "\n" + "Group: " + id_group;
-    }
 
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null) return false;
-        if (!this.getClass().equals(object.getClass())) return false;
-
-        User object2 = (User) object;
-        if ((this.id == object2.getId()) && (this.email == object2.getEmail()) &&
-                (this.password == object2.getPassword()) && (this.id_group == object2.getGroup()) &&
-                (this.date_of_reg == object2.getDate_of_reg())
-        ) return true;
-        return false;
-    }
 
     @Override
     public int hashCode() {
