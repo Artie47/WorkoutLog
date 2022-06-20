@@ -40,10 +40,10 @@ class ScheduleActivity : AppCompatActivity() {
                 val myDialogFragment = ScheduleDataDialog()
                 myDialogFragment.setMessage(message)
                 when (dayOfWeek){
-                    Calendar.MONDAY -> {
+                    Calendar.SUNDAY -> {
                         myDialogFragment.show(transaction, message)
                     }
-                    Calendar.WEDNESDAY ->{
+                    Calendar.TUESDAY ->{
                         myDialogFragment.show(transaction, message)
                     }
                     Calendar.FRIDAY ->{
