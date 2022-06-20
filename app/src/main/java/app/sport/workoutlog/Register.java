@@ -81,14 +81,11 @@ private void initializeComponents() {
         userData = new UserLocal(name, email, password, date_string, Integer.toString(id_group));
 
 
-        userAPI.save(user).enqueue(new Callback<User>() {
+        userAPI.signUp(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 
                 Toast.makeText(Register.this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
-
-
-
 
                 Intent i = new Intent(Register.this, ScheduleActivity.class);
                 startActivity(i);
