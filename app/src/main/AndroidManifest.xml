@@ -2,24 +2,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="app.sport.workoutlog">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="WorkoutLog"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.WorkoutLog"
+        android:usesCleartextTraffic="true"
         tools:ignore="Instantiatable">
+        <activity
+            android:name=".Trener"
+            android:exported="false" />
         <activity
             android:name=".activity_reg"
             android:exported="true" />
         <activity
             android:name=".ScheduleActivity"
             android:exported="true" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -27,13 +31,15 @@
             //только вертикальное расположение
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login"
+        <activity
+            android:name=".Login"
             tools:ignore="Instantiatable" />
         <activity android:name=".Register" />
-        <activity android:name=".PersonalAccount"/>
+        <activity android:name=".PersonalAccount" />
     </application>
 
 </manifest>
