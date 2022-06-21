@@ -76,7 +76,6 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             app:backgroundTint="@color/btn"
-            android:onClick="Login"
             app:cornerRadius="20dp" />
 
     </LinearLayout>

@@ -12,7 +12,7 @@ public interface UserAPI {
     @POST("/signIn")
     Call<User> signIn(@Body User user);
 
-    @POST("/user/get")
-    Call<User> getUser(@Body Integer id);
+    @POST("/getUser")
+    Call<User> getUser(@Body User user);
 
 }

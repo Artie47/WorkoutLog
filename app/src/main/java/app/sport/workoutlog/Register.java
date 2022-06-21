@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 
-import org.jetbrains.annotations.NotNull;
-
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,19 +33,41 @@ public class Register extends AppCompatActivity {
     private  UserAPI userAPI;
     private AppDatabase db;
     public static UserLocal userData;
-
-    private static final String PREFS_FILE = "Account";
-    private static final String PREF_ID = "ID";
-    SharedPreferences settings;
-
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         initializeComponents();
 
+    }
+
+    public void onPutSettings(String email){
+        SharedPreferences.Editor e = sharedPreferences.edit();
+        e.putString("credSetKey", email);
+        e.apply();
+    }
+
+    public String onShowSettings()
+    {
+        String ret = sharedPreferences.getString("credSetKey", " ");
+        return ret;
+    }
+
+    public static SharedPreferences getDefaultSharedPreferences(Context context) {
+        return context.getSharedPreferences(getDefaultSharedPreferencesName(context),
+                getDefaultSharedPreferencesMode());
+    }
+
+    private static String getDefaultSharedPreferencesName(Context context) {
+        return context.getPackageName() + "_preferences";
+    }
+
+    private static int getDefaultSharedPreferencesMode() {
+        return Context.MODE_PRIVATE;
     }
 
 
@@ -84,6 +107,8 @@ private void initializeComponents() {
         userAPI.signUp(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+
+                onPutSettings(user.getEmail());
                 
                 Toast.makeText(Register.this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
 

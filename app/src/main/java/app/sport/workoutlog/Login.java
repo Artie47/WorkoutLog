@@ -41,7 +41,8 @@ public class Login extends AppCompatActivity {
         EditText inputEditTextPassword = findViewById(R.id.input_pas);
         CheckBox is_a_Trainer = findViewById(R.id.is_a_trainer);
 
-        MaterialButton buttonReg = findViewById(R.id.sign_in);
+        MaterialButton buttonReg = findViewById(R.id.login);
+        RetrofitService retrofitService = new RetrofitService();
 
 
 
@@ -54,13 +55,12 @@ public class Login extends AppCompatActivity {
                 trainer.setEmail(email);
                 trainer.setPassword(password);
 
-                RetrofitService retrofitService = new RetrofitService();
                 TrainerAPI trainerAPI = retrofitService.getRetrofit().create(TrainerAPI.class);
 
                 trainerAPI.trainerSignIn(trainer).enqueue(new Callback<Trainer>() {
                     @Override
                     public void onResponse(Call<Trainer> call, Response<Trainer> response) {
-                        Toast.makeText(Login.this, "Авторизация успешна!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Авторизация успешна", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(Login.this, Trener.class);
                     }
 
@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
                 });
             }
             else {
-                RetrofitService retrofitService = new RetrofitService();
+
                 UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
                 User user = new User();
                 user.setEmail(email);
