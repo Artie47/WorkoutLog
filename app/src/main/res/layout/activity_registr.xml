@@ -52,6 +52,7 @@
             android:inputType="text"
             android:padding="10dp" />
         <CheckBox
+
             android:id="@+id/is_a_trainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

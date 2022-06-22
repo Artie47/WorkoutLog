@@ -19,6 +19,7 @@
     <string name="groups">Группа</string>
     <string name="input_group">Группа</string>
     <string name="approval">Согласие на обработку данных</string>
-    <string name="iAmAtrainer">Я тренер</string>
+    <string name="iAmAtrainer">Тренер</string>
+    <string name="Date_1">1 Занятие</string>
     <string name="teacher_reg">Зарегистрироваться как тренер</string>
 </resources>

@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -17,21 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import app.sport.workoutlog.localDB.AppDatabase;
 import app.sport.workoutlog.localDB.UserLocal;
-import app.sport.workoutlog.model.Group;
 import app.sport.workoutlog.model.User;
 import app.sport.workoutlog.retrofit.RetrofitService;
 import app.sport.workoutlog.retrofit.UserAPI;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +33,6 @@ public class Register extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private RetrofitService retrofitService = new RetrofitService();
     private UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
-    private Boolean isChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

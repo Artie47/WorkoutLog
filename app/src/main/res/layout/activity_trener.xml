@@ -6,4 +6,94 @@
     android:layout_height="match_parent"
     tools:context=".Trener">
 
+    <ImageView
+        android:id="@+id/img_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="22dp"
+        android:src="@drawable/img_schedule"
+        app:layout_constraintBottom_toTopOf="@+id/block_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/block_1"
+        android:layout_width="375dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/block_trener"
+        app:layout_constraintBottom_toTopOf="@+id/block_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_schedule" />
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Date_1"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/stroke"
+        android:textSize="25sp"
+        android:shadowColor="@color/gray"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        app:layout_constraintBottom_toBottomOf="@+id/block_1"
+        app:layout_constraintEnd_toEndOf="@+id/block_1"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="@+id/block_1"
+        app:layout_constraintTop_toTopOf="@+id/block_1"
+        app:layout_constraintVertical_bias="0.166" />
+
+    <View
+        android:id="@+id/block_2"
+        android:layout_width="375dp"
+        android:layout_height="80dp"
+        android:background="@drawable/block_trener"
+        app:layout_constraintBottom_toTopOf="@+id/block_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/block_1" />
+
+    <View
+        android:id="@+id/block_3"
+        android:layout_width="375dp"
+        android:layout_height="80dp"
+        android:background="@drawable/block_trener"
+        app:layout_constraintBottom_toTopOf="@+id/block_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/block_2" />
+
+    <View
+        android:id="@+id/block_4"
+        android:layout_width="375dp"
+        android:layout_height="80dp"
+        android:background="@drawable/block_trener"
+        app:layout_constraintBottom_toTopOf="@+id/block_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/block_3" />
+
+    <View
+        android:id="@+id/block_5"
+        android:layout_width="375dp"
+        android:layout_height="80dp"
+        android:background="@drawable/block_trener"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/block_4" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,6 @@ import java.util.List;
 
 import app.sport.workoutlog.model.ProfileDTO;
 import app.sport.workoutlog.model.User;
-import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

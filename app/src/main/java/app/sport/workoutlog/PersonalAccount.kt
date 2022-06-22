@@ -51,9 +51,9 @@ class PersonalAccount : AppCompatActivity() {
 
         val retrofitService = RetrofitService()
         val userAPI = retrofitService.retrofit.create(UserAPI::class.java)
-
         val user = User()
-        user.email = onShowSettings()
+        val email = onShowSettings()
+        user.email = email
 
         userAPI.getProfileData(user).enqueue(object : Callback<ProfileDTO> {
             override fun onFailure(call: Call<ProfileDTO>, t: Throwable) {
@@ -62,22 +62,13 @@ class PersonalAccount : AppCompatActivity() {
             override fun onResponse(call: Call<ProfileDTO>, response: Response<ProfileDTO>) {
 
                 val userdata = response.body()
-
                 if (userdata != null) {
                     findViewById<TextView>(R.id.text_name).text = userdata.name
-                    findViewById<TextView>(R.id.text_price).text =
-                        findViewById<TextView>(R.id.text_price).text as String + " " + userdata.price
-                    findViewById<TextView>(R.id.text_sch).text =
-                        findViewById<TextView>(R.id.text_sch).text as String + " " + userdata.nextLesson
-
-                    findViewById<TextView>(R.id.text_term).text =
-                        findViewById<TextView>(R.id.text_term).text as String + " " + userdata.abonement_time
-
-                    findViewById<TextView>(R.id.text_v_sport).text =
-                        findViewById<TextView>(R.id.text_v_sport).text as String + " " + userdata.sportkind
-
-                    findViewById<TextView>(R.id.text_group).text =
-                        findViewById<TextView>(R.id.text_group).text as String + " " + userdata.groupName
+                    findViewById<TextView>(R.id.text_price).text = userdata.price
+                    findViewById<TextView>(R.id.text_sch).text = userdata.nextLesson
+                    findViewById<TextView>(R.id.text_term).text = userdata.abonement_time
+                    findViewById<TextView>(R.id.text_v_sport).text = userdata.sportkind
+                    findViewById<TextView>(R.id.text_group).text = userdata.groupName
 
                 }
 
