@@ -26,13 +26,15 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
 
+    private Boolean isChecked= false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registr);
         MaterialButton regBtn = findViewById(R.id.signin);
-        //initializeComponents();
+        initializeComponents();
 
     }
 //
@@ -44,13 +46,15 @@ public class Login extends AppCompatActivity {
         MaterialButton buttonReg = findViewById(R.id.login);
         RetrofitService retrofitService = new RetrofitService();
 
-
+        is_a_Trainer.setOnClickListener(v ->{
+            isChecked = true;
+        });
 
         buttonReg.setOnClickListener(view -> {
             String email = String.valueOf(inputEditTextEmail);
             String password = String.valueOf(inputEditTextPassword);
 
-            if (is_a_Trainer.isChecked()) {
+            if (isChecked) {
                 Trainer trainer = new Trainer();
                 trainer.setEmail(email);
                 trainer.setPassword(password);

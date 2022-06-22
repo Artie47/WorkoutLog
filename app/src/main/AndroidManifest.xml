@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="Instantiatable">
         <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Welcome_Page"
+            android:exported="false" />
+        <activity
             android:name=".Trener"
             android:exported="false" />
         <activity
@@ -35,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login"/>
+        <activity android:name=".Login" />
         <activity android:name=".Register" />
         <activity android:name=".PersonalAccount" />
     </application>

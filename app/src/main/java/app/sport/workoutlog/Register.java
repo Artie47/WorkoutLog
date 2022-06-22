@@ -6,7 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,47 +17,50 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import app.sport.workoutlog.localDB.AppDatabase;
 import app.sport.workoutlog.localDB.UserLocal;
+import app.sport.workoutlog.model.Group;
 import app.sport.workoutlog.model.User;
 import app.sport.workoutlog.retrofit.RetrofitService;
 import app.sport.workoutlog.retrofit.UserAPI;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Register extends AppCompatActivity {
 
-    private  UserAPI userAPI;
-    private AppDatabase db;
     public static UserLocal userData;
     private SharedPreferences sharedPreferences;
+    private RetrofitService retrofitService = new RetrofitService();
+    private UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+    private Boolean isChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         initializeComponents();
 
     }
 
-    public void onPutSettings(String email){
+    public void onPutSettings(String email) {
         SharedPreferences.Editor e = sharedPreferences.edit();
         e.putString("credSetKey", email);
         e.apply();
     }
 
-    public String onShowSettings()
-    {
-        String ret = sharedPreferences.getString("credSetKey", " ");
-        return ret;
+    public String onShowSettings() {
+        return sharedPreferences.getString("credSetKey", " ");
     }
 
     public static SharedPreferences getDefaultSharedPreferences(Context context) {
@@ -70,57 +76,89 @@ public class Register extends AppCompatActivity {
         return Context.MODE_PRIVATE;
     }
 
+    public void getGroupsToSpinner(Context context, List<String> groups, Spinner spinner) {
+        ArrayAdapter<String> adapterCategoryFilterSpinner = new
+                ArrayAdapter<String>(
+                context,
+                android.R.layout.simple_spinner_item,
+                groups
+        );
+        adapterCategoryFilterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapterCategoryFilterSpinner);
+    }
+
+    public void getAllGroups(Context context, Spinner spinner) {
+        userAPI.getAllGroups().enqueue(new Callback<List<String>>() {
+                                           @Override
+                                           public void onResponse(@NonNull Call<List<String>> call, @NonNull Response<List<String>> response) {
+                                               getGroupsToSpinner(context, response.body(), spinner);
+                                           }
+
+                                           @Override
+                                           public void onFailure(@NonNull Call<List<String>> call, @NonNull Throwable t) {
+                                               Toast.makeText(Register.this, "Возникла ошибка при связи с сервером!", Toast.LENGTH_SHORT).show();
+                                           }
+                                       }
+        );
+    }
 
 
-//    public static UserLocal getUser(Context context){
-//        AppDatabase db = AppDatabase.getInstance(context);
-//        final UserLocal[] userData = new UserLocal[1];
-//        db.userDao().getUser(MainActivity.ID_USER)
-//                .observeOn(Schedulers.io())
-//                .subscribe(user -> userData[0] = user);
-//        return userData[0];
-//    }
+    private void initializeComponents() {
+        EditText inputEditTextName = findViewById(R.id.input_name);
+        EditText inputEditTextDate = findViewById(R.id.input_date);
+        EditText inputEditTextEmail = findViewById(R.id.input_login);
+        EditText inputEditTextPassword = findViewById(R.id.input_pas);
+        Spinner inputSpinnerGroup = findViewById(R.id.input_group);
+        getAllGroups(this, inputSpinnerGroup);
 
-private void initializeComponents() {
-    EditText inputEditTextName = findViewById(R.id.input_name);
-    EditText inputEditTextDate = findViewById(R.id.input_date);
-    EditText inputEditTextEmail = findViewById(R.id.input_login);
-    EditText inputEditTextPassword = findViewById(R.id.input_pas);
+        MaterialButton buttonReg = findViewById(R.id.sign_in);
 
-    MaterialButton buttonReg = findViewById(R.id.sign_in);
+        buttonReg.setOnClickListener(
+                v -> {
+                    String name = String.valueOf(inputEditTextName.getText());
+                    String email = String.valueOf(inputEditTextEmail.getText());
+                    String password = String.valueOf(inputEditTextPassword.getText());
+                    String date_string = String.valueOf(inputEditTextDate.getText());
 
-    buttonReg.setOnClickListener(view -> {
-        String name = String.valueOf(inputEditTextName);
-        String email = String.valueOf(inputEditTextEmail);
-        String password = String.valueOf(inputEditTextPassword);
-        String date_string = String.valueOf(inputEditTextDate);
-        int id_group = 1;
-
-        RetrofitService retrofitService = new RetrofitService();
-        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
-
-        User user = new User(name, email,password, date_string, id_group);
-
-        userData = new UserLocal(name, email, password, date_string, Integer.toString(id_group));
+                    User user = new User();
+                    user.setName(name);
+                    user.setEmail(email);
+                    user.setPassword(Encoder.md5Custom(password));
+                    user.setDate_of_reg(date_string);
 
 
-        userAPI.signUp(user).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                    userAPI.getGroupId((String) inputSpinnerGroup.getSelectedItem())
+                            .enqueue(new Callback<Integer>() {
+                                @Override
+                                public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
+                                    int id_group = 1;
+                                    user.setId_group(id_group);
+                                }
 
-                onPutSettings(user.getEmail());
-                
-                Toast.makeText(Register.this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
+                                @Override
+                                public void onFailure(@NonNull Call<Integer> call, @NonNull Throwable t) {
+                                }
+                            });
 
-                Intent i = new Intent(Register.this, ScheduleActivity.class);
-                startActivity(i);
-            }
+                    userAPI.signUp(user).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
 
-            @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                Toast.makeText(Register.this, "Возникла ошибка при регистрации!", Toast.LENGTH_SHORT).show();
-                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, "Ошибка обнаружена", t);
-            }
-        });
-    });
-}}
+                            onPutSettings(user.getEmail());
+                            Toast.makeText(Register.this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(Register.this, ScheduleActivity.class);
+                            startActivity(i);
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                            Toast.makeText(Register.this, "Возникла ошибка при регистрации!", Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, "Ошибка обнаружена", t);
+                        }
+                    });
+                }
+        );
+
+
+    }
+}

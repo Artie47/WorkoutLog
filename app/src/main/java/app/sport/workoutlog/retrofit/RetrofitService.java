@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
@@ -23,7 +24,7 @@ public class RetrofitService {
                 .build();
 
         retrofit =  new Retrofit.Builder()
-                .baseUrl("http://192.168.43.69:8555")
+                .baseUrl("http://10.19.54.250:9000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
